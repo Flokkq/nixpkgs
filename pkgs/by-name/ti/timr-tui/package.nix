@@ -7,17 +7,16 @@
   alsa-lib-with-plugins,
   alsa-plugins,
   pipewire,
-  writableTmpDirAsHomeHook,
   enableSound ? false,
 }:
-rustPlatform.buildRustPackage (finalAttrs: {
+rustPlatform.buildRustPackage rec {
   pname = "timr-tui";
   version = "1.6.1";
 
   src = fetchFromGitHub {
     owner = "sectore";
     repo = "timr-tui";
-    tag = "v${finalAttrs.version}";
+    rev = "v${version}";
     hash = "sha256-s2FnMwDq4tYBaWaT9y1GLbVGFs7zSnOmjcF5leO12JE=";
   };
 
@@ -38,17 +37,13 @@ rustPlatform.buildRustPackage (finalAttrs: {
     })
   ];
 
-  nativeCheckInputs = [
-    writableTmpDirAsHomeHook
-  ];
-
-  meta = {
+  meta = with lib; {
     description = "TUI to organize your time: Pomodoro, Countdown, Timer.";
     homepage = "https://github.com/sectore/timr-tui";
-    changelog = "https://github.com/sectore/timr-tui/releases/tag/v${finalAttrs.version}";
-    license = lib.licenses.mit;
+    changelog = "https://github.com/sectore/timr-tui/releases/tag/v${version}";
+    license = licenses.mit;
     mainProgram = "timr-tui";
-    maintainers = [ lib.maintainers.flokkq ];
-    platforms = lib.platforms.unix;
+    maintainers = with maintainers; [ flokkq ];
+    platforms = platforms.unix;
   };
-})
+}
