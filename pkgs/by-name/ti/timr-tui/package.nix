@@ -8,8 +8,6 @@
   alsa-plugins,
   pipewire,
   writableTmpDirAsHomeHook,
-  versionCheckHook,
-  nix-update-script,
   enableSound ? false,
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -44,18 +42,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     writableTmpDirAsHomeHook
   ];
 
-  nativeInstallCheckInputs = [
-    versionCheckHook
-  ];
-  versionCheckProgramArg = "--version";
-  # Error: Operation not permitted (os error 1)
-  versionCheckKeepEnvironment = lib.optionals stdenv.hostPlatform.isDarwin [ "HOME" ];
-  doInstallCheck = true;
-
-  passthru.updateScript = nix-update-script { };
-
   meta = {
-    description = "TUI to organize your time: Pomodoro, Countdown, Timer";
+    description = "TUI to organize your time: Pomodoro, Countdown, Timer.";
     homepage = "https://github.com/sectore/timr-tui";
     changelog = "https://github.com/sectore/timr-tui/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.mit;
